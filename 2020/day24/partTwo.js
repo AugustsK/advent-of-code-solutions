@@ -1,5 +1,5 @@
 const { getInput, strToLines, lineToArr, lineToIntArr } = require('../../utils/input');
-const { outResult, outDebug } = require('../../utils/output');
+const { outResult, outDebug, createProgress } = require('../../utils/output');
 
 // Constants
 const DIRECTIONS = ['ne', 'e', 'se', 'sw', 'w', 'nw'];
@@ -86,6 +86,8 @@ const fillGrid = () => {
 // Processing initial grid
 grid[coordsToString(REFERENCE)] = WHITE;
 
+const setupProgress = createProgress(instructions.length);
+
 instructions.forEach(instruction => {
     const coordArr = walkInstruction(instruction);
     const coords = coordsToString(coordArr);
@@ -97,11 +99,15 @@ instructions.forEach(instruction => {
     } else {
         grid[coords] = BLACK;
     }
+
+    setupProgress.increment();
 });
 
 fillGrid();
 
 // Mutating
+const progress = createProgress(instructions.length);
+
 for (let i = 0; i < 100; i++) {
     let newGrid = {
         ...grid
@@ -124,10 +130,23 @@ for (let i = 0; i < 100; i++) {
                 newGrid[coordStr] = WHITE;
             }
         } else {
-
+            if (blackNeighbours === 2) {
+                pushBounds(coords);
+                newGrid[coordStr] = BLACK;
+            }
         }
     }
+
+    grid = {
+        ...newGrid
+    };
+
+    fillGrid();
+    progress.increment();
 }
+
+setupProgress.stop();
+progress.stop();
 
 let result = Object.values(grid).filter(color => color === BLACK).length;
 

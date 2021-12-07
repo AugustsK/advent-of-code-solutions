@@ -1,11 +1,8 @@
 const { getInput, strToLines, lineToArr, lineToIntArr } = require('../../utils/input');
 const { outResult, outDebug } = require('../../utils/output');
 
-const factorial = num => {
-    let result = 0;
-    for (let i = 1; i <= num; i++) result += i;
-
-    return result;
+const gauss = num => {
+    return (num + 1) * num / 2;
 }
 
 const positions = lineToIntArr(getInput());
@@ -17,7 +14,7 @@ for (let i = min; i <= max; i++) {
     let total = 0;
 
     positions.forEach(subject => {
-        total += factorial(Math.abs(subject - i));
+        total += gauss(Math.abs(subject - i));
     });
 
     if (total < lowestSum) {
