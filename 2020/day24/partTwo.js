@@ -1,5 +1,5 @@
-const { getInput, strToLines, lineToArr, lineToIntArr } = require('../utils/input');
-const { outResult, outDebug } = require('../utils/output');
+const { getInput, strToLines, lineToArr, lineToIntArr } = require('../../utils/input');
+const { outResult, outDebug } = require('../../utils/output');
 
 // Constants
 const DIRECTIONS = ['ne', 'e', 'se', 'sw', 'w', 'nw'];

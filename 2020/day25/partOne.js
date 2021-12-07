@@ -1,5 +1,5 @@
-const { getInput, strToLines, lineToArr, lineToIntArr } = require('../utils/input');
-const { outResult, outDebug } = require('../utils/output');
+const { getInput, strToLines, lineToArr, lineToIntArr } = require('../../utils/input');
+const { outResult, outDebug } = require('../../utils/output');
 
 const SALT = 20201227;
 const INITIAL_SUBJECT_NUM = 7;

@@ -1,5 +1,5 @@
-const { getInput, strToLines, lineToArr, lineToIntArr } = require('../utils/input');
-const { outResult, outDebug } = require('../utils/output');
+const { getInput, strToLines, lineToArr, lineToIntArr } = require('../../utils/input');
+const { outResult, outDebug } = require('../../utils/output');
 
 const list = strToLines(getInput());
 let result = 0;
