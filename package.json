@@ -1,0 +1,15 @@
+{
+  "name": "@augusts/advent-of-code-solutions",
+  "version": "1.0.0",
+  "description": "Advent of Code 2021",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Augusts Karklins <augusts.karklins@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "pretty-ms": "^7.0.1"
+  }
+}
