@@ -1,20 +1,13 @@
 const { getInput, strToLines, lineToArr, lineToIntArr } = require('../../utils/input');
-const { outResult, outDebug, createProgress } = require('../../utils/output');
+const { outResult, outDebug } = require('../../utils/output');
 
 // Constants
 const DIRECTIONS = ['ne', 'e', 'se', 'sw', 'w', 'nw'];
-const BLACK = 'black';
-const WHITE = 'white';
 const REFERENCE = [0, 0, 0];
 
 // Setup vars
 const instructions = strToLines(getInput());
-let grid = {};
-let bounds = {
-    q: [-1, 1],
-    r: [-1, 1],
-    s: [-1, 1]
-}
+let grid = new Set();
 
 // Methods
 const coordsToString = ([q, r, s]) => `${q}:${r}:${s}`;
@@ -48,106 +41,59 @@ const walkInstruction = instruction => {
     return coords;
 }
 
-const pushBounds = ([q, r, s]) => {
-    let [ qMin, qMax ] = bounds.q;
-    let [ rMin, rMax ] = bounds.r;
-    let [ sMin, sMax ] = bounds.s;
+const countBlackNeighbours = (coordStr, subFn) => {
+    let blackNeighbours = 0;
 
-    qMin = q === qMin ? qMin - 1 : qMin;
-    qMax = q === qMax ? qMax + 1 : qMax;
-    rMin = r === rMin ? rMin - 1 : rMin;
-    rMax = r === rMax ? rMax + 1 : rMax;
-    sMin = s === sMin ? sMin - 1 : sMin;
-    sMax = s === sMax ? sMax + 1 : sMax;
+    DIRECTIONS.forEach(direction => {
+        const neighbourCoords = coordsToString(navigate[direction](coordsToArr(coordStr)));
 
-    bounds.q = [qMin, qMax];
-    bounds.r = [rMin, rMax];
-    bounds.s = [sMin, sMax];
-}
-
-const fillGrid = () => {
-    let [ qMin, qMax ] = bounds.q;
-    let [ rMin, rMax ] = bounds.r;
-    let [ sMin, sMax ] = bounds.s;
-
-    for (let q = qMin; q <= qMax; q++) {
-        for (let r = rMin; r <= rMax; r++) {
-            for (let s = sMin; s <= sMax; s++) {
-                const coords = coordsToString([q, r, s]);
-
-                if (!(coords in grid)) {
-                    grid[coords] = WHITE;
-                }
-            }
+        if (grid.has(neighbourCoords)) {
+            blackNeighbours += 1;
+        } else if (typeof subFn === 'function') {
+            subFn(neighbourCoords);
         }
-    }
+    });
+
+    return blackNeighbours;
 }
 
 // Processing initial grid
-grid[coordsToString(REFERENCE)] = WHITE;
-
-const setupProgress = createProgress(instructions.length);
-
 instructions.forEach(instruction => {
     const coordArr = walkInstruction(instruction);
     const coords = coordsToString(coordArr);
 
-    pushBounds(coordArr);
-
-    if (coords in grid) {
-        grid[coords] = grid[coords] === WHITE ? BLACK : WHITE;
+    if (grid.has(coords)) {
+        grid.delete(coords);
     } else {
-        grid[coords] = BLACK;
+        grid.add(coords);
     }
-
-    setupProgress.increment();
 });
 
-fillGrid();
-
 // Mutating
-const progress = createProgress(instructions.length);
+for (let i = 1; i <= 100; i++) {
+    let whitesToFlip = [];
+    let blacksToFlip = [];
 
-for (let i = 0; i < 100; i++) {
-    let newGrid = {
-        ...grid
-    };
+    for (let blackTile of grid.values()) {
+        let blackNeighbours = countBlackNeighbours(blackTile, (neighbourCoords) => {
+            let subBlackNeighbours = countBlackNeighbours(neighbourCoords);
 
-    for (const [coordStr, color] of Object.entries(grid)) {
-        const coords = coordsToArr(coordStr);
-        let blackNeighbours = 0;
-
-        DIRECTIONS.forEach(direction => {
-            const neighbourCoords = coordsToString(navigate[direction](coords));
-
-            if (neighbourCoords in grid && grid[neighbourCoords] === BLACK) {
-                blackNeighbours += 1;
+            if (subBlackNeighbours === 2) {
+                whitesToFlip.push(neighbourCoords);
             }
         });
 
-        if (color === BLACK) {
-            if (blackNeighbours === 0 || blackNeighbours > 2) {
-                newGrid[coordStr] = WHITE;
-            }
-        } else {
-            if (blackNeighbours === 2) {
-                pushBounds(coords);
-                newGrid[coordStr] = BLACK;
-            }
+        if (blackNeighbours === 0 || blackNeighbours > 2) {
+            blacksToFlip.push(blackTile);
         }
     }
 
-    grid = {
-        ...newGrid
-    };
+    whitesToFlip.forEach(coords => grid.add(coords));
+    blacksToFlip.forEach(coords => grid.delete(coords));
 
-    fillGrid();
-    progress.increment();
+    outDebug(`${grid.size} black tiles after ${i} days`);
 }
 
-setupProgress.stop();
-progress.stop();
-
-let result = Object.values(grid).filter(color => color === BLACK).length;
+let result = grid.size;
 
 outResult(result);
