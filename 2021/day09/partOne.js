@@ -15,14 +15,7 @@ for (let y = 0; y < lines.length; y++) {
         const bottomPoint = y + 1 < lines.length ? parseInt(lines[y+1][x], 10) : Infinity;
         const leftPoint = x > 0 ? parseInt(line[x-1], 10) : Infinity;
 
-        if (
-            point < topPoint
-            && point < rightPoint
-            && point < bottomPoint
-            && point < leftPoint
-        ) {
-            result += 1 + point;
-        }
+        if (point < topPoint && point < rightPoint && point < bottomPoint && point < leftPoint) result += 1 + point;
     }
 }
 
