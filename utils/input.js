@@ -9,6 +9,8 @@ const lineToIntArr = (line, delimiter = ',') =>
 
 const strToLines = str => ('' + str).split(/\r?\n/);
 
+const strToEmptyLineGroups = str => ('' + str).split(/\r?\n\r?\n/).map(strToLines);
+
 const readFile = path => fs.readFileSync(path).toString();
 
 const inputFileArg = () => process.argv[2];
@@ -19,5 +21,6 @@ module.exports = {
     lineToArr,
     lineToIntArr,
     strToLines,
+    strToEmptyLineGroups,
     getInput
 }
