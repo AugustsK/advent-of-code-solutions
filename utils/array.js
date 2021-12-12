@@ -15,8 +15,13 @@ const countInstances = (arr, char) => {
     return arr.filter(x => x.includes(char)).length;
 }
 
+const sort = arr => {
+    return arr.sort((a, b) => a < b ? -1 : b > a ? 1 : 0);
+}
+
 module.exports = {
     arrIntersects,
     arrDiff,
-    countInstances
+    countInstances,
+    sort
 }
