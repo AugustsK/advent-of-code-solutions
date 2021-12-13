@@ -10,10 +10,7 @@ let dots = strToLines(getInput()).filter(line => /^[0-9]/.test(line)).map(line =
 const instructions = strToLines(getInput()).filter(line => /^fold/.test(line)).map(line => {
     const [ axis, amount ] = line.replace('fold along ', '').split('=');
 
-    return {
-        axis,
-        amount: parseInt(amount, 10)
-    }
+    return { axis, amount: parseInt(amount, 10) };
 });
 
 const filterDots = () => {
@@ -23,11 +20,7 @@ const filterDots = () => {
         const dotStr = `${dot.x}:${dot.y}`;
 
         if (unique.has(dotStr)) return false;
-        else {
-            unique.add(dotStr);
-
-            return true;
-        }
+        else return unique.add(dotStr);
     });
 }
 
@@ -42,9 +35,7 @@ const fold = (axis, amount) => {
     filterDots();
 }
 
-instructions.forEach(({ axis, amount }) => {
-    fold(axis, amount);
-});
+instructions.forEach(({ axis, amount }) => fold(axis, amount));
 
 let grid = [];
 let highestY = 0;
@@ -57,17 +48,10 @@ dots.forEach(({ x, y }) => {
 
 for (let y = 0; y <= highestY; y++) {
     grid.push([]);
-
-    for (let x = 0; x <= highestX; x++) {
-        grid[y].push('.');
-    }
+    for (let x = 0; x <= highestX; x++) grid[y].push('.');
 }
 
-dots.forEach(({ x, y }) => {
-    grid[y][x] = '#';
-});
-
+dots.forEach(({ x, y }) => grid[y][x] = '#');
 grid = grid.map(line => line.join(''));
 grid = grid.join('\n');
-
 console.log(grid);

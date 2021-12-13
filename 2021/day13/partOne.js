@@ -10,10 +10,7 @@ let dots = strToLines(getInput()).filter(line => /^[0-9]/.test(line)).map(line =
 const instructions = strToLines(getInput()).filter(line => /^fold/.test(line)).map(line => {
     const [ axis, amount ] = line.replace('fold along ', '').split('=');
 
-    return {
-        axis,
-        amount: parseInt(amount, 10)
-    }
+    return { axis, amount: parseInt(amount, 10) };
 });
 
 const filterDots = () => {
@@ -23,11 +20,7 @@ const filterDots = () => {
         const dotStr = `${dot.x}:${dot.y}`;
 
         if (unique.has(dotStr)) return false;
-        else {
-            unique.add(dotStr);
-
-            return true;
-        }
+        else return unique.add(dotStr);
     });
 }
 
