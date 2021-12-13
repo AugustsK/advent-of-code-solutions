@@ -48,8 +48,8 @@ dots.forEach(({ x, y }) => {
 
 for (let y = 0; y <= highestY; y++) {
     grid.push([]);
-    for (let x = 0; x <= highestX; x++) grid[y].push('.');
+    for (let x = 0; x <= highestX; x++) grid[y].push(' ');
 }
 
-dots.forEach(({ x, y }) => grid[y][x] = '#');
+dots.forEach(({ x, y }) => grid[y][x] = '█');
 console.log(grid.map(line => line.join('')).join('\n'));
