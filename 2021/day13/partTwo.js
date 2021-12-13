@@ -52,6 +52,4 @@ for (let y = 0; y <= highestY; y++) {
 }
 
 dots.forEach(({ x, y }) => grid[y][x] = '#');
-grid = grid.map(line => line.join(''));
-grid = grid.join('\n');
-console.log(grid);
+console.log(grid.map(line => line.join('')).join('\n'));
