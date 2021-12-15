@@ -13,7 +13,14 @@ const outResult = result => {
 
 const outDebug = debug => console.log(`${chalk.blue((new Date()).toTimeString())}: ${typeof debug === 'object' ? JSON.stringify(debug, null, 2) : debug}`);
 
+const outProgress = str => {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(str);
+}
+
 module.exports = {
     outResult,
-    outDebug
+    outDebug,
+    outProgress
 }
