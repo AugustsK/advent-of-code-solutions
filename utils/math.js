@@ -11,11 +11,17 @@ const gcd = (x, y) => {
     return x;
 }
 
-const lcm = (x, y) => {
-    return (!x || !y) ? 0 : Math.abs((x * y) / gcd(x, y));
-}
+const lcm = (x, y) => (!x || !y) ? 0 : Math.abs((x * y) / gcd(x, y));
+
+const gauss = num => (num + 1) * num / 2;
 
 module.exports = {
     gcd,
-    lcm
+    lcm,
+    gauss
 };
+
+/**
+ * gauss: x = (y + 1) * y / 2
+ * reverse-gauss: y / 2 = (y + 1)
+ */
