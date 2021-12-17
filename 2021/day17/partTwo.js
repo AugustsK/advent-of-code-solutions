@@ -27,12 +27,10 @@ const maxXTrajectory = findFactorial(targetXMax, false);
 for (let x = minXTrajectory; x <= maxXTrajectory; x++) xOptions[x] = { stops: true };
 
 // Find all X trajectories that get to target in 1 step
-let xOneStep = 0;
-for (let x = targetXMin; x <= targetXMax; x++) xOneStep++;
+let xOneStep = targetXMax - targetXMin + 1;
 
 // Find all Y trajectories, that get to target in 1 step
-let yOneStep = 0;
-for (let y = targetYMin; y <= targetYMax; y++) yOneStep++;
+let yOneStep = targetYMax - targetYMin + 1;
 
 // All x and y trajectories with 1 step will be compatible combinations
 let result = xOneStep * yOneStep;
