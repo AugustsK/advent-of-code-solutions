@@ -18,8 +18,15 @@ const outResult = (result = '') => {
 /**
  * @param {*} debug
  */
-const outDebug = debug => debugFlag() ? console.log(`${chalk.blue((new Date()).toTimeString())}: ${typeof debug === 'object' ? JSON.stringify(debug, null, 2) : debug}`) : null;
+const outDebug = debug => {
+    if (debugFlag()) {
+        const d = new Date();
+        const timeStr = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
+        const output = typeof debug === 'object' ? JSON.stringify(debug, null, 2) : debug;
 
+        console.log(`${chalk.blue(timeStr)}: ${output}`);
+    }
+}
 const progress = (cur, length, resolution = 50, filledSymbol = '█', emptySymbol = '.') => {
     if (!debugFlag()) {
         const filled = new Array(Math.floor(resolution / length * cur)).fill(filledSymbol);
