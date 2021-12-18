@@ -9,7 +9,7 @@ const Utils = require('../../utils');
     for (let i = 0; i < numbers.length; i++) {
         for (let j = 0; j < numbers.length; j++) {
             if (i !== j) {
-                promises.push(new Promise((resolve, reject) => {
+                promises.push(new Promise(resolve => {
                     const worker = new Worker('./partTwoSub.js', {
                         workerData: {
                             a: numbers[i],
@@ -20,11 +20,6 @@ const Utils = require('../../utils');
                     worker.once('message', result => {
                         magnitudes.add(result);
                         resolve(result);
-                    });
-                    worker.on('error', reject);
-                    worker.on('exit', code => {
-                        if (code === 0) resolve();
-                        else reject();
                     });
                 }));
             }
