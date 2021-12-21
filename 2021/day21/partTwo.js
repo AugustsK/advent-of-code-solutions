@@ -49,10 +49,10 @@ const simulate = (startX, startY, scoreX = 0, scoreY = 0, i = 0) => {
 
             // Player 1 === even (i starts at 0)
             if (i % 2 === 0) {
-                playerOnePos = (playerOnePos + diceRoll) % 10 || 10;
+                playerOnePos = (startX + diceRoll) % 10 || 10;
                 playerOneScore = scoreX + playerOnePos;
             } else {
-                playerTwoPos = (playerTwoPos + diceRoll) % 10 || 10;
+                playerTwoPos = (startY + diceRoll) % 10 || 10;
                 playerTwoScore = scoreY + playerTwoPos;
             }
 
