@@ -69,5 +69,4 @@ const simulate = (startX, startY, scoreX = 0, scoreY = 0, i = 0) => {
 // Get wins
 const [ playerOneWins, playerTwoWins ] = simulate(playerOneInitPos, playerTwoInitPos);
 
-// TODO: This is still wrong and I don't know why, send help pls
 Utils.Output.outResult(Math.max(playerOneWins, playerTwoWins));
