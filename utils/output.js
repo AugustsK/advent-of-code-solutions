@@ -21,7 +21,7 @@ const outResult = (result = '') => {
 const outDebug = debug => {
     if (debugFlag()) {
         const d = new Date();
-        const timeStr = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
+        const timeStr = `${('' + d.getHours()).padStart(2, '0')}:${('' + d.getMinutes()).padStart(2, '0')}:${('' + d.getSeconds()).padStart(2, '0')}.${('' + d.getMilliseconds()).padStart(3, '0')}`;
         const output = typeof debug === 'object' ? JSON.stringify(debug, null, 2) : debug;
 
         console.log(`${chalk.blue(timeStr)}: ${output}`);
