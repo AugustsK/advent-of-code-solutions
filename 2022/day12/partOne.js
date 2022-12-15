@@ -1,4 +1,3 @@
-const fs = require('fs');
 const Utils = require('../../utils');
 
 const coords = (x, y) => `${x}-${y}`;
@@ -11,7 +10,6 @@ let min = [0, 0];
 let max = [];
 let start;
 let end;
-let lastUpdated = Array.from({length: 12}).fill('');
 
 Utils.Input.strToLines(Utils.Input.getInput()).forEach((line, y, yArr) => {
     line.split('').forEach((height, x, xArr) => {
@@ -26,7 +24,7 @@ Utils.Input.strToLines(Utils.Input.getInput()).forEach((line, y, yArr) => {
         } else if (height === 'E') {
             end = [x, y];
             grid.set(coords(x, y), {
-                height: 27,
+                height: heightStrToInt('z'),
                 path: Infinity,
                 coords: [x, y],
                 coordStr: coords(x, y)
@@ -65,17 +63,6 @@ const getShortest  = () => {
     shortestPath = shortest.path;
 
     if (shortestPath === Infinity) {
-        fs.writeFileSync('output.json', JSON.stringify({
-            currentNode,
-            start,
-            end,
-            min,
-            max,
-            lastUpdated,
-            queue: [...queue.values()],
-            visited: [...visited.values()],
-            grid: [...grid.values()]
-        }, null, 2));
         throw 'not right'
     }
 
@@ -91,10 +78,7 @@ const updateDistance = ([x, y], curDistance, height) => {
         if (grid.has(coordStr) && !visited.has(coordStr)) {
             const node = grid.get(coordStr);
 
-            lastUpdated.push(coordStr);
-            lastUpdated.shift();
-
-            if (Math.abs(node.height - height) <= 1) {
+            if (height + 1 >= node.height) {
                 node.path = Math.min(node.path, curDistance + 1);
                 grid.set(coordStr, node);
             }
@@ -116,13 +100,11 @@ while (queue.size > 0 && queue.has(coords(...end))) {
 
     currentNode = getShortest();
 
-    // process.stdout.clearLine();
-    // process.stdout.cursorTo(0);
-    // process.stdout.write(`Remaining nodes: ${queue.size}. Currently shortest path: ${shortestPath}`);
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(`Remaining nodes: ${queue.size}. Currently shortest path: ${shortestPath}`);
 }
 
 let partOne = grid.get(coords(...end)).path;
-let partTwo = 0;
 
 Utils.Output.outResult(partOne);
-Utils.Output.outResult(partTwo);
