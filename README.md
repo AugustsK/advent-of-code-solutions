@@ -2,7 +2,7 @@
 
 My solutions for https://adventofcode.com/
 
-To run any:
+To run any day:
 
 1. Clone repo
 2. `node 2021/day01/partOne.js 2021/day01/input.txt`
