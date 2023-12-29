@@ -16,7 +16,7 @@ const { outResult, outDebug, outProgress } = require('../../utils/output');
 
 const EMPTY = 'L';
 const OCCUPIED = '#';
-const rawGrid = strToLines(getInput()).map(line => line.split(''));
+const rawGrid = strToLines(getInput()).map((line) => line.split(''));
 const xLen = rawGrid[0].length;
 const yLen = rawGrid.length;
 let grid = {};
@@ -27,80 +27,80 @@ const coordsToStr = (x, y) => `${x}:${y}`;
 
 const isValidCoords = (x, y) => x >= 0 && x < xLen && y >= 0 && y < yLen;
 
-const isSeat = spot => [EMPTY, OCCUPIED].includes(spot);
+const isSeat = (spot) => [EMPTY, OCCUPIED].includes(spot);
 
 const getOccupiedNeighbours = (x, y) => {
-    let occupied = 0;
+  let occupied = 0;
 
-    for (let chkX = 0; chkX < 3; chkX++) {
-        for (let chkY = 0; chkY < 3; chkY++) {
-            const siblingX = x + (chkX - 1);
-            const siblingY = y + (chkY - 1);
+  for (let chkX = 0; chkX < 3; chkX++) {
+    for (let chkY = 0; chkY < 3; chkY++) {
+      const siblingX = x + (chkX - 1);
+      const siblingY = y + (chkY - 1);
 
-            if (
-                !(siblingX === x && siblingY === y)
-                && isValidCoords(siblingX, siblingY)
-                && grid[coordsToStr(siblingX, siblingY)] === OCCUPIED
-            ) {
-                occupied++;
-            }
+      if (
+        !(siblingX === x && siblingY === y) &&
+        isValidCoords(siblingX, siblingY) &&
+        grid[coordsToStr(siblingX, siblingY)] === OCCUPIED
+      ) {
+        occupied++;
+      }
 
-            if (occupied >= 4) {
-                return occupied;
-            }
-        }
+      if (occupied >= 4) {
+        return occupied;
+      }
     }
+  }
 
-    return occupied;
+  return occupied;
 };
 
 const drawGrid = () => {
-    let out = '\n';
+  let out = '\n';
 
-    for (let y = 0; y < yLen; y++) {
-        let line = '';
-        for (let x = 0; x < xLen; x++) {
-            line += grid[coordsToStr(x, y)];
-        }
-        out += line + '\n';
+  for (let y = 0; y < yLen; y++) {
+    let line = '';
+    for (let x = 0; x < xLen; x++) {
+      line += grid[coordsToStr(x, y)];
     }
+    out += line + '\n';
+  }
 
-    out += '\n=================================';
+  out += '\n=================================';
 
-    console.log(out);
+  console.log(out);
 };
 
-rawGrid.forEach((line, y) => line.forEach((spot, x) => grid[coordsToStr(x, y)] = spot));
+rawGrid.forEach((line, y) => line.forEach((spot, x) => (grid[coordsToStr(x, y)] = spot)));
 
 //drawGrid();
 
 while (mutate) {
-    outProgress(`Iteration ${++iterations}...`);
-    let changed = false;
-    let toggle = [];
+  outProgress(`Iteration ${++iterations}...`);
+  let changed = false;
+  let toggle = [];
 
-    for (let x = 0; x < xLen; x++) {
-        for (let y = 0; y < yLen; y++) {
-            const spot = grid[coordsToStr(x, y)];
+  for (let x = 0; x < xLen; x++) {
+    for (let y = 0; y < yLen; y++) {
+      const spot = grid[coordsToStr(x, y)];
 
-            if (isSeat(spot)) {
-                const occupiedNeighbours = getOccupiedNeighbours(x, y);
+      if (isSeat(spot)) {
+        const occupiedNeighbours = getOccupiedNeighbours(x, y);
 
-                if (spot === EMPTY && occupiedNeighbours === 0) {
-                    toggle.push(coordsToStr(x, y));
-                    changed = true;
-                } else if (spot === OCCUPIED && occupiedNeighbours >= 4) {
-                    toggle.push(coordsToStr(x, y));
-                    changed = true;
-                }
-            }
+        if (spot === EMPTY && occupiedNeighbours === 0) {
+          toggle.push(coordsToStr(x, y));
+          changed = true;
+        } else if (spot === OCCUPIED && occupiedNeighbours >= 4) {
+          toggle.push(coordsToStr(x, y));
+          changed = true;
         }
+      }
     }
+  }
 
-    toggle.forEach(coords => grid[coords] = grid[coords] === OCCUPIED ? EMPTY : OCCUPIED);
+  toggle.forEach((coords) => (grid[coords] = grid[coords] === OCCUPIED ? EMPTY : OCCUPIED));
 
-    //drawGrid();
-    mutate = !!changed;
+  //drawGrid();
+  mutate = !!changed;
 }
 
-outResult(Object.values(grid).filter(spot => spot === OCCUPIED).length);
+outResult(Object.values(grid).filter((spot) => spot === OCCUPIED).length);

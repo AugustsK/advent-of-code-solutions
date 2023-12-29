@@ -8,11 +8,11 @@ let result = 0;
 let j = 0;
 
 for (let y = 0; y < lines.length; y++) {
-    const x = j % length;
+  const x = j % length;
 
-    if (lines[y][x] === '#') result += 1;
+  if (lines[y][x] === '#') result += 1;
 
-    j += 3;
+  j += 3;
 }
 
 outResult(result);

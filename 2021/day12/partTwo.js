@@ -5,44 +5,46 @@ const { outResult, outDebug } = require('../../utils/output');
 const connections = {};
 
 const mapConnection = (a, b) => {
-    const connectObj = a in connections ? connections[a] : {
-        links: new Set(),
-        isBig: /[A-Z]/.test(a),
-        id: a,
-        onlyOnce: ['start', 'end'].includes(a)
-    };
+  const connectObj =
+    a in connections
+      ? connections[a]
+      : {
+          links: new Set(),
+          isBig: /[A-Z]/.test(a),
+          id: a,
+          onlyOnce: ['start', 'end'].includes(a),
+        };
 
-    connectObj.links.add(b);
-    connections[a] = connectObj;
-}
+  connectObj.links.add(b);
+  connections[a] = connectObj;
+};
 
-strToLines(getInput()).forEach(connection => {
-    const [ a, b ] = connection.split('-');
-    mapConnection(a, b);
-    mapConnection(b, a);
+strToLines(getInput()).forEach((connection) => {
+  const [a, b] = connection.split('-');
+  mapConnection(a, b);
+  mapConnection(b, a);
 });
 
 const walk = (node, entirePath = [], visited = new Set(), flag = false) => {
-    let paths = 0;
-    const newEntirePath = [...entirePath];
+  let paths = 0;
+  const newEntirePath = [...entirePath];
 
-    if (visited.has(node.id)) {
-        if (flag || node.onlyOnce) return paths;
-        else {
-            flag = true;
-        }
+  if (visited.has(node.id)) {
+    if (flag || node.onlyOnce) return paths;
+    else {
+      flag = true;
     }
-    else if (!node.isBig) visited.add(node.id);
+  } else if (!node.isBig) visited.add(node.id);
 
-    newEntirePath.push(node.id);
+  newEntirePath.push(node.id);
 
-    Array.from(node.links).forEach(path => {
-        if (path === 'end') paths += 1;
-        else paths += walk(connections[path], newEntirePath, new Set(Array.from(visited)), flag);
-    });
+  Array.from(node.links).forEach((path) => {
+    if (path === 'end') paths += 1;
+    else paths += walk(connections[path], newEntirePath, new Set(Array.from(visited)), flag);
+  });
 
-    return paths;
-}
+  return paths;
+};
 
 let result = walk(connections['start']);
 

@@ -4,20 +4,20 @@ const { outResult, outDebug } = require('../../utils/output');
 let fishes = lineToIntArr(getInput());
 
 for (let i = 0; i < 80; i++) {
-    const newFishes = [];
+  const newFishes = [];
 
-    fishes = fishes.map(fish => {
-        let newVal = --fish;
+  fishes = fishes.map((fish) => {
+    let newVal = --fish;
 
-        if (newVal < 0) {
-            newFishes.push(8);
-            newVal = 6;
-        }
+    if (newVal < 0) {
+      newFishes.push(8);
+      newVal = 6;
+    }
 
-        return newVal;
-    });
+    return newVal;
+  });
 
-    fishes = [...fishes, ...newFishes];
+  fishes = [...fishes, ...newFishes];
 }
 
 outResult(fishes.length);

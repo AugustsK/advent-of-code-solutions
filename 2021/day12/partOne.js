@@ -5,38 +5,41 @@ const { outResult, outDebug } = require('../../utils/output');
 const connections = {};
 
 const mapConnection = (a, b) => {
-    const connectObj = a in connections ? connections[a] : {
-        links: new Set(),
-        isBig: /[A-Z]/.test(a),
-        id: a
-    };
+  const connectObj =
+    a in connections
+      ? connections[a]
+      : {
+          links: new Set(),
+          isBig: /[A-Z]/.test(a),
+          id: a,
+        };
 
-    connectObj.links.add(b);
-    connections[a] = connectObj;
-}
+  connectObj.links.add(b);
+  connections[a] = connectObj;
+};
 
-strToLines(getInput()).forEach(connection => {
-    const [ a, b ] = connection.split('-');
-    mapConnection(a, b);
-    mapConnection(b, a);
+strToLines(getInput()).forEach((connection) => {
+  const [a, b] = connection.split('-');
+  mapConnection(a, b);
+  mapConnection(b, a);
 });
 
 const walk = (node, entirePath = [], visited = new Set()) => {
-    let paths = 0;
-    const newEntirePath = [...entirePath];
+  let paths = 0;
+  const newEntirePath = [...entirePath];
 
-    if (visited.has(node.id)) return paths;
-    else if (!node.isBig) visited.add(node.id);
+  if (visited.has(node.id)) return paths;
+  else if (!node.isBig) visited.add(node.id);
 
-    newEntirePath.push(node.id);
+  newEntirePath.push(node.id);
 
-    Array.from(node.links).forEach(path => {
-        if (path === 'end') paths += 1;
-        else paths += walk(connections[path], newEntirePath, new Set(Array.from(visited)));
-    });
+  Array.from(node.links).forEach((path) => {
+    if (path === 'end') paths += 1;
+    else paths += walk(connections[path], newEntirePath, new Set(Array.from(visited)));
+  });
 
-    return paths;
-}
+  return paths;
+};
 
 let result = walk(connections['start']);
 

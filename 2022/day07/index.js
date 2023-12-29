@@ -10,89 +10,89 @@ const cwd = [];
 const cwdToStr = () => cwd.join(' ');
 const stdout = Utils.Input.strToLines(Utils.Input.getInput());
 
-stdout.forEach(line => {
-    if (/^\$/.test(line)) {
-        const cmd = line.replace('$ ', '');
+stdout.forEach((line) => {
+  if (/^\$/.test(line)) {
+    const cmd = line.replace('$ ', '');
 
-        if (cmd.startsWith('cd')) {
-            const dir = cmd.replace('cd ', '');
+    if (cmd.startsWith('cd')) {
+      const dir = cmd.replace('cd ', '');
 
-            if (dir === '..') {
-                const subDir = cwdToStr();
-                cwd.pop();
-                const dir = tree.get(cwdToStr());
-                dir.tree.push(subDir);
-                tree.set(cwdToStr(), dir);
-
-            } else {
-                cwd.push(dir);
-
-                if (!tree.has(cwdToStr())) {
-                    tree.set(cwdToStr(), {
-                        name: cwdToStr(),
-                        tree: []
-                    });
-                }
-            }
-        }
-    } else if (line && !line.startsWith('dir')) {
+      if (dir === '..') {
+        const subDir = cwdToStr();
+        cwd.pop();
         const dir = tree.get(cwdToStr());
-        const [ sizeStr, filename ] = line.split(' ');
-        const size = parseInt(sizeStr, 10);
-        const filePath = `${cwdToStr()}.${filename}`;
+        dir.tree.push(subDir);
+        tree.set(cwdToStr(), dir);
+      } else {
+        cwd.push(dir);
 
-        if (!files.has(filePath)) {
-            dir.tree.push({
-                size,
-                filename,
-            });
-
-            dir.size += size;
-
-            tree.set(cwdToStr(), dir);
-            files.add(filePath);
+        if (!tree.has(cwdToStr())) {
+          tree.set(cwdToStr(), {
+            name: cwdToStr(),
+            tree: [],
+          });
         }
+      }
     }
+  } else if (line && !line.startsWith('dir')) {
+    const dir = tree.get(cwdToStr());
+    const [sizeStr, filename] = line.split(' ');
+    const size = parseInt(sizeStr, 10);
+    const filePath = `${cwdToStr()}.${filename}`;
+
+    if (!files.has(filePath)) {
+      dir.tree.push({
+        size,
+        filename,
+      });
+
+      dir.size += size;
+
+      tree.set(cwdToStr(), dir);
+      files.add(filePath);
+    }
+  }
 });
 
 while (cwd.length > 1) {
-    const subDir = cwdToStr();
-    cwd.pop();
-    const dir = tree.get(cwdToStr());
-    dir.tree.push(subDir);
-    tree.set(cwdToStr(), dir);
+  const subDir = cwdToStr();
+  cwd.pop();
+  const dir = tree.get(cwdToStr());
+  dir.tree.push(subDir);
+  tree.set(cwdToStr(), dir);
 }
 
-const getDirSize = dir => dir.tree.reduce((sum, item) => {
+const getDirSize = (dir) =>
+  dir.tree.reduce((sum, item) => {
     if (item.size) {
-        sum += item.size;
+      sum += item.size;
     } else if (tree.has(item)) {
-        sum += getDirSize(tree.get(item));
+      sum += getDirSize(tree.get(item));
     }
 
     return sum;
-}, 0);
+  }, 0);
 
 const partOne = [...tree.values()].reduce((sum, dir) => {
-    const dirSum = getDirSize(dir);
+  const dirSum = getDirSize(dir);
 
-    if (dirSum <= LIMIT) {
-        return sum + dirSum;
-    }
+  if (dirSum <= LIMIT) {
+    return sum + dirSum;
+  }
 
-    return sum;
+  return sum;
 }, 0);
 
 const toCleanUp = REQUIRED_AMOUNT - (DISK_SPACE - getDirSize(tree.get('/')));
 
 const partTwo = [...tree.values()].reduce((result, dir) => {
-    const dirSum = getDirSize(dir);
+  const dirSum = getDirSize(dir);
 
-    if (dirSum > toCleanUp && dirSum < result) {
-        return dirSum;
-    }
+  if (dirSum > toCleanUp && dirSum < result) {
+    return dirSum;
+  }
 
-    return result;
+  return result;
 }, Infinity);
 
 Utils.Output.outResult(partOne);

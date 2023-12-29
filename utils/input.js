@@ -6,7 +6,7 @@ const fs = require('fs');
  * @return {*|string[]}
  */
 const lineToArr = (line, delimiter = ',') => {
-    return line.split(delimiter);
+  return line.split(delimiter);
 };
 
 /**
@@ -15,58 +15,58 @@ const lineToArr = (line, delimiter = ',') => {
  * @return {number[]}
  */
 const lineToIntArr = (line, delimiter = ',') => {
-    return lineToArr(line, delimiter)
-        .filter(str => str !== '')
-        .map(str => parseInt(str, 10));
+  return lineToArr(line, delimiter)
+    .filter((str) => str !== '')
+    .map((str) => parseInt(str, 10));
 };
 
 /**
  * @param {string} str
  * @returns {string[]}
  */
-const strToLines = str => {
-    return ('' + str).split(/\r?\n/);
+const strToLines = (str) => {
+  return ('' + str).split(/\r?\n/);
 };
 
 /**
  * @param {string} str
  * @returns {string[][]}
  */
-const strToEmptyLineGroups = str => {
-    return ('' + str).split(/\r?\n\r?\n/).map(strToLines);
+const strToEmptyLineGroups = (str) => {
+  return ('' + str).split(/\r?\n\r?\n/).map(strToLines);
 };
 
 /**
  * @param {string} path
  * @return {string}
  */
-const readFile = path => {
-    return fs.readFileSync(path).toString();
+const readFile = (path) => {
+  return fs.readFileSync(path).toString();
 };
 
 /**
  * @return {string}
  */
 const inputFileArg = () => {
-    return process.argv[2];
+  return process.argv[2];
 };
 
 const debugFlag = () => {
-    return ['-D', '--debug'].includes(process.argv[3]);
+  return ['-D', '--debug'].includes(process.argv[3]);
 };
 
 /**
  * @returns {string}
  */
 const getInput = () => {
-    return readFile(inputFileArg());
+  return readFile(inputFileArg());
 };
 
 module.exports = {
-    lineToArr,
-    lineToIntArr,
-    strToLines,
-    strToEmptyLineGroups,
-    getInput,
-    debugFlag
-}
+  lineToArr,
+  lineToIntArr,
+  strToLines,
+  strToEmptyLineGroups,
+  getInput,
+  debugFlag,
+};

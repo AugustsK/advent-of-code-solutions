@@ -1,16 +1,15 @@
 const Utils = require('../../utils');
-const {sort} = require("../../utils/array");
+const { sort } = require('../../utils/array');
 
-const elves = Utils.Input
-    .getInput()
-    .split(/\n\n/)
-    .map(
-        elve => elve
-            .split(/\n/)
-            .filter(calories => !!calories)
-            .map(calories => parseInt(calories, 10))
-            .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
-    );
+const elves = Utils.Input.getInput()
+  .split(/\n\n/)
+  .map((elve) =>
+    elve
+      .split(/\n/)
+      .filter((calories) => !!calories)
+      .map((calories) => parseInt(calories, 10))
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0),
+  );
 
 const sortedElves = [...elves].sort((a, b) => b - a);
 

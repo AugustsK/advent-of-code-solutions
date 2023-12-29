@@ -4,7 +4,8 @@
   "description": "Advent of Code 2021",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write ."
   },
   "author": "Augusts Karklins <augusts.karklins@gmail.com>",
   "license": "ISC",
@@ -13,5 +14,15 @@
     "lodash": "^4.17.21",
     "pretty-ms": "^7.0.1",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "singleQuote": true,
+    "arrowParens": "always",
+    "trailingComma": "all",
+    "printWidth": 120
   }
 }

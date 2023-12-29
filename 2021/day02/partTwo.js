@@ -8,22 +8,22 @@ let y = 0;
 let aim = 0;
 
 list.forEach((item, i, arr) => {
-    let [direction, amount] = item.split(' ');
+  let [direction, amount] = item.split(' ');
 
-    amount = parseInt(amount, 10);
+  amount = parseInt(amount, 10);
 
-    switch (direction) {
-        case 'forward':
-            x += amount;
-            y += aim * amount;
-            break;
-        case 'down':
-            aim += amount;
-            break;
-        case 'up':
-            aim -= amount;
-            break;
-    }
+  switch (direction) {
+    case 'forward':
+      x += amount;
+      y += aim * amount;
+      break;
+    case 'down':
+      aim += amount;
+      break;
+    case 'up':
+      aim -= amount;
+      break;
+  }
 });
 
 result = x * y;
