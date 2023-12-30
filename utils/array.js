@@ -19,9 +19,15 @@ const sort = (arr) => {
   return arr.sort((a, b) => (a < b ? -1 : b > a ? 1 : 0));
 };
 
+const first = (arr) => arr[0];
+
+const last = (arr) => arr[arr.length - 1];
+
 module.exports = {
   arrIntersects,
   arrDiff,
   countInstances,
   sort,
+  first,
+  last,
 };
