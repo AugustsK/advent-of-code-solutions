@@ -23,4 +23,4 @@ or
 
 From 2023, Bun is used as runtime
 
-`bun 2023/day01/index.ts 2023/day01/testInput.txt`
+`bun 2023/day01/partOne.ts 2023/day01/testInput.txt`
