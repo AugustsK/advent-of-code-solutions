@@ -2,15 +2,7 @@ import type { Coords } from '../../types';
 
 import * as fs from 'fs';
 
-import { InputUtil, OutputUtil, MathUtil, ArrayUtil } from '../../utils';
-
-const coords2str = (coords: Coords) => `${coords.x}-${coords.y}`;
-
-const str2coords = (str: string) => {
-  const [x, y] = str.split('-').map((num) => parseInt(num, 10));
-
-  return { x, y };
-};
+import { InputUtil, OutputUtil, MathUtil, ArrayUtil, GridUtil } from '../../utils';
 
 enum GroundMap {
   vertical = '|',
@@ -44,13 +36,13 @@ const getSideCoords = (coords: Coords) => ({
 
 const nodes2Symbol = (nodes: Coords[], base: Coords) => {
   const [a, b] = nodes;
-  const aStr = coords2str(a);
-  const bStr = coords2str(b);
+  const aStr = GridUtil.coords2str(a);
+  const bStr = GridUtil.coords2str(b);
   const { top, right, bottom, left } = getSideCoords(base);
-  const topStr = coords2str(top);
-  const rightStr = coords2str(right);
-  const bottomStr = coords2str(bottom);
-  const leftStr = coords2str(left);
+  const topStr = GridUtil.coords2str(top);
+  const rightStr = GridUtil.coords2str(right);
+  const bottomStr = GridUtil.coords2str(bottom);
+  const leftStr = GridUtil.coords2str(left);
 
   if (aStr === topStr && bStr === bottomStr) return GroundMap.vertical;
   if (aStr === rightStr && bStr === leftStr) return GroundMap.horizontal;
@@ -86,7 +78,7 @@ const getAdjacentNodes = (pipe: GroundMap, coords: Coords): Coords[] => {
 };
 
 const getAdjacentNodesFromGrid = (coords: Coords): Coords[] => {
-  const pipe = grid.get(coords2str(coords));
+  const pipe = grid.get(GridUtil.coords2str(coords));
 
   if (!pipe) return [];
 
@@ -105,7 +97,7 @@ InputUtil.strToLines(InputUtil.getInput()).forEach((line, y, yArr) => {
     maxX = xArr.length - 1;
 
     if (Object.values(GroundMap).includes(char)) {
-      grid.set(coords2str({ x, y }), char as GroundMap);
+      grid.set(GridUtil.coords2str({ x, y }), char as GroundMap);
 
       if (char === GroundMap.starting) {
         startingCoords = { x, y };
@@ -119,18 +111,18 @@ const potentialNodes = getAdjacentNodesFromGrid(startingCoords);
 let currentNode = potentialNodes.find((node) => {
   const adjacent = getAdjacentNodesFromGrid(node);
 
-  return adjacent.some((adjacentNode) => coords2str(adjacentNode) === coords2str(startingCoords));
+  return adjacent.some((adjacentNode) => GridUtil.coords2str(adjacentNode) === GridUtil.coords2str(startingCoords));
 });
 
-const ring = [coords2str(startingCoords), coords2str(currentNode)];
+const ring = [GridUtil.coords2str(startingCoords), GridUtil.coords2str(currentNode)];
 
-while (coords2str(currentNode) !== coords2str(startingCoords)) {
+while (GridUtil.coords2str(currentNode) !== GridUtil.coords2str(startingCoords)) {
   const adjacent = getAdjacentNodesFromGrid(currentNode);
-  const next = adjacent.find((node) => coords2str(node) !== ring[ring.length - 2]);
+  const next = adjacent.find((node) => GridUtil.coords2str(node) !== ring[ring.length - 2]);
   currentNode = next;
 
-  if (coords2str(next) !== coords2str(startingCoords)) {
-    ring.push(coords2str(next));
+  if (GridUtil.coords2str(next) !== GridUtil.coords2str(startingCoords)) {
+    ring.push(GridUtil.coords2str(next));
   }
 }
 
@@ -138,10 +130,10 @@ const first = ring[1];
 const last = ArrayUtil.last(ring);
 
 const startingSymbol =
-  nodes2Symbol([str2coords(first), str2coords(last)], startingCoords) ||
-  nodes2Symbol([str2coords(last), str2coords(first)], startingCoords);
+  nodes2Symbol([GridUtil.str2coords(first), GridUtil.str2coords(last)], startingCoords) ||
+  nodes2Symbol([GridUtil.str2coords(last), GridUtil.str2coords(first)], startingCoords);
 
-grid.set(coords2str(startingCoords), startingSymbol);
+grid.set(GridUtil.coords2str(startingCoords), startingSymbol);
 
 let partOne = Math.floor(ring.length / 2);
 
@@ -152,7 +144,7 @@ for (let y = 0; y <= maxY; y++) {
   let isInner = false;
 
   for (let x = 0; x <= maxX; x++) {
-    const coordStr = coords2str({ x, y });
+    const coordStr = GridUtil.coords2str({ x, y });
     const isRing = ring.indexOf(coordStr) > -1;
 
     if (isRing) {
@@ -189,7 +181,7 @@ let output = '';
 
 for (let y = 0; y <= maxY; y++) {
   for (let x = 0; x <= maxX; x++) {
-    const coordStr = coords2str({ x, y });
+    const coordStr = GridUtil.coords2str({ x, y });
     const isLine = ring.indexOf(coordStr) > -1;
 
     if (isLine) {
