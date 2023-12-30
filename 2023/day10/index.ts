@@ -145,34 +145,6 @@ grid.set(coords2str(startingCoords), startingSymbol);
 
 let partOne = Math.floor(ring.length / 2);
 
-const rayMap = new Map<
-  string,
-  {
-    t: number;
-    r: number;
-    b: number;
-    l: number;
-    coords: string;
-  }
->();
-
-for (let y = 0; y <= maxY; y++) {
-  for (let x = 0; x <= maxX; x++) {
-    const coordStr = coords2str({ x, y });
-    const isLine = ring.indexOf(coordStr) > -1;
-
-    if (!isLine) {
-      rayMap.set(coordStr, {
-        t: 0,
-        r: 0,
-        b: 0,
-        l: 0,
-        coords: coordStr,
-      });
-    }
-  }
-}
-
 const inner: string[] = [];
 
 for (let y = 0; y <= maxY; y++) {
